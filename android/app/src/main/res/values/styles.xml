@@ -16,7 +16,14 @@
     </style>
 
 
+    <!-- 启动过渡主题：不再使用整幅位图 splash（会导致图标被拉伸放大变形），
+         改为纯色背景 + 系统标准自适应图标（系统自动按安全区缩放，不变形），并关闭过渡动画 -->
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:background">@drawable/splash</item>
+        <item name="android:background">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimationDuration">0</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
     </style>
 </resources>

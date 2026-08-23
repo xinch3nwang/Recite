@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shuffle, FolderOpen, ChevronRight, BookOpenCheck } from 'lucide-react';
+import { Shuffle, ChevronRight, BookOpenCheck } from 'lucide-react';
 import { FileUploader } from '@/components/FileUploader';
 import { RecentList } from '@/components/RecentList';
 import { useReciteStore } from '@/store/useReciteStore';
@@ -72,25 +72,14 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2] px-4 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F9F7F2] px-4 pb-28 pt-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <div className="mb-10 text-center">
-          <div className="mb-6 flex items-center justify-center">
-            <h1 className="text-3xl font-semibold tracking-tight text-stone-800 sm:text-4xl">
-              忆读
-            </h1>
-            <button
-              type="button"
-              onClick={() => navigate('/files')}
-              className="ml-4 flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-600 shadow-sm transition-colors hover:border-amber-400 hover:text-amber-600"
-            >
-              <FolderOpen size={15} />
-              文件管理
-              <ChevronRight size={14} />
-            </button>
-          </div>
+          <h1 className="mb-6 text-center text-3xl font-semibold tracking-tight text-stone-800 sm:text-4xl">
+            忆读
+          </h1>
           <p className="text-base text-stone-500">
-            上传 HTML 文档，隐藏重点内容，辅助记忆与复习
+            隐藏重点内容，辅助记忆与复习
           </p>
         </div>
 
@@ -99,7 +88,7 @@ export default function Home() {
         </div>
 
         {/* 功能入口区 */}
-        <div className="mb-10 animate-[fadeIn_0.5s_ease-out_0.1s]">
+        <div className="mb-4 animate-[fadeIn_0.5s_ease-out_0.1s]">
           <button
             type="button"
             onClick={() => navigate('/quiz')}
@@ -119,7 +108,7 @@ export default function Home() {
         </div>
 
         {/* 没掌握清单入口 */}
-        <div className="mb-10 animate-[fadeIn_0.5s_ease-out_0.15s]">
+        <div className="mb-6 animate-[fadeIn_0.5s_ease-out_0.15s]">
           <button
             type="button"
             onClick={() => navigate('/unmastered')}

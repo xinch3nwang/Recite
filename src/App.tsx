@@ -7,6 +7,7 @@ import Reader from '@/pages/Reader';
 import FileManager from '@/pages/FileManager';
 import Quiz from '@/pages/Quiz';
 import Unmastered from '@/pages/Unmastered';
+import BottomNav from '@/components/BottomNav';
 import { useReciteStore } from '@/store/useReciteStore';
 
 // 安卓返回键：阅读页返回首页，首页退出应用
@@ -51,10 +52,14 @@ function BackButtonHandler() {
   return null;
 }
 
-export default function App() {
+/** 主框架：仅主页面（首页/文件管理）显示底部导航，子页面由页面内返回按钮导航 */
+function MainLayout() {
+  const location = useLocation();
+  const showBottomNav = ['/', '/files'].includes(location.pathname);
+
   return (
-    <Router>
-      <BackButtonHandler />
+    <>
+      {showBottomNav && <BottomNav />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/reader" element={<Reader />} />
@@ -62,6 +67,15 @@ export default function App() {
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/unmastered" element={<Unmastered />} />
       </Routes>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <BackButtonHandler />
+      <MainLayout />
     </Router>
   );
 }

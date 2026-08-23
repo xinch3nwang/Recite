@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, FolderPlus, Search, X, Download, Trash2, FolderInput } from 'lucide-react';
+import { FolderPlus, Search, X, Download, Trash2, FolderInput } from 'lucide-react';
 import { useReciteStore } from '@/store/useReciteStore';
 import { buildCategoryTree, getCategorySubtreeIds, type CategoryNode } from '@/utils/categories';
 import { queryDocuments, searchDocuments, getPage, recordDocumentAccess } from '@/services/documentService';
@@ -238,15 +238,7 @@ export default function FileManager() {
   return (
     <div className="min-h-screen bg-[#F9F7F2]">
       <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800"
-            aria-label="返回首页"
-          >
-            <ArrowLeft size={18} />
-          </button>
+        <div className="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6">
           <h1 className="text-base font-medium text-stone-800">文件管理</h1>
           <div className="ml-auto">
             <button
@@ -262,7 +254,7 @@ export default function FileManager() {
       </header>
 
       {/* 移动端（<lg）纵向堆叠：分类在上、文档列表在下，避免竖屏挤压错乱 */}
-      <main className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row">
+      <main className="mx-auto flex max-w-7xl flex-col gap-6 px-4 pb-28 pt-6 sm:px-6 lg:flex-row">
         {/* 分类侧栏：移动端全宽，桌面端固定宽度并吸顶 */}
         <aside className="w-full shrink-0 lg:w-60">
           <div className="rounded-xl border border-stone-200 bg-white p-3 shadow-sm lg:sticky lg:top-20">
@@ -362,7 +354,7 @@ export default function FileManager() {
 
           {/* 批量操作栏（窄屏可换行，避免溢出屏幕） */}
           {selectedIds.size > 0 && (
-            <div className="fixed bottom-4 left-1/2 z-40 flex w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 shadow-lg">
+            <div className="fixed bottom-24 left-1/2 z-40 flex w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 shadow-lg">
               <span className="mr-1 text-xs text-stone-500">已选 {selectedIds.size} 项</span>
               <button
                 type="button"
