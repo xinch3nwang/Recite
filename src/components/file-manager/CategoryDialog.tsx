@@ -79,18 +79,18 @@ export function CategoryDialog({ open, editing, categories, onClose, onSave }: C
       aria-modal="true"
     >
       <div
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-base font-medium text-stone-800">
+          <h2 className="flex items-center gap-2 text-base font-medium text-stone-800 dark:text-stone-100">
             <FolderPlus size={18} className="text-amber-500" />
             {editing ? '编辑分类' : '新建分类'}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 hover:text-stone-600"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 hover:text-stone-600 dark:text-stone-500 dark:hover:bg-stone-800 dark:hover:text-stone-100"
             aria-label="关闭"
           >
             <X size={16} />
@@ -99,20 +99,20 @@ export function CategoryDialog({ open, editing, categories, onClose, onSave }: C
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-stone-700">分类名称 *</label>
+            <label className="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-200">分类名称 *</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="例如：英语单词"
               maxLength={30}
-              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none transition-colors focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none transition-colors focus:border-amber-500 focus:ring-2 focus:ring-amber-200 dark:border-stone-700 dark:bg-stone-900"
               autoFocus
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-stone-700">描述</label>
+            <label className="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-200">描述</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -124,11 +124,11 @@ export function CategoryDialog({ open, editing, categories, onClose, onSave }: C
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-stone-700">上级分类</label>
+            <label className="mb-1 block text-sm font-medium text-stone-700 dark:text-stone-200">上级分类</label>
             <select
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
-              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500 dark:border-stone-700 dark:bg-stone-900"
             >
               <option value="none">无（作为一级分类）</option>
               {parentOptions.map((cat) => (
@@ -145,19 +145,19 @@ export function CategoryDialog({ open, editing, categories, onClose, onSave }: C
               type="number"
               value={sortOrder}
               onChange={(e) => setSortOrder(Number(e.target.value))}
-              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500 dark:border-stone-700 dark:bg-stone-900"
             />
           </div>
 
           {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">{error}</p>
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-500/15 dark:text-red-400">{error}</p>
           )}
 
           <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50"
+              className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800"
             >
               取消
             </button>

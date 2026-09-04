@@ -180,25 +180,25 @@ export default function Quiz() {
 
   if (phase === 'select') {
     return (
-      <div className="min-h-screen bg-[#F9F7F2]">
-        <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur">
+      <div className="min-h-screen bg-[#F9F7F2] dark:bg-[#0C0A09]">
+        <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur dark:border-stone-700/60 dark:bg-[#0C0A09]/90">
           <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3 sm:px-6">
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-stone-100"
               aria-label="返回首页"
             >
               <ArrowLeft size={18} />
             </button>
-            <h1 className="flex items-center gap-2 text-base font-medium text-stone-800">
+            <h1 className="flex items-center gap-2 text-base font-medium text-stone-800 dark:text-stone-100">
               <Shuffle size={18} className="text-amber-500" />
               随机抽背
             </h1>
             <button
               type="button"
               onClick={() => navigate('/unmastered')}
-              className="ml-auto flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-600 shadow-sm transition-colors hover:border-amber-400 hover:text-amber-600"
+              className="ml-auto flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-600 shadow-sm transition-colors hover:border-amber-400 hover:text-amber-600 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:text-amber-400"
             >
               <BookOpenCheck size={15} />
               没掌握清单
@@ -212,9 +212,9 @@ export default function Quiz() {
         </header>
 
         <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-          <p className="mb-6 text-sm text-stone-500">选择要抽背的文档，系统将随机抽取其中的重点内容进行提问。</p>
+          <p className="mb-6 text-sm text-stone-500 dark:text-stone-400">选择要抽背的文档，系统将随机抽取其中的重点内容进行提问。</p>
           {docMetas.length === 0 ? (
-            <div className="rounded-xl bg-stone-100/50 px-6 py-16 text-center text-sm text-stone-500">
+            <div className="rounded-xl bg-stone-100/50 px-6 py-16 text-center text-sm text-stone-500 dark:bg-stone-800/50 dark:text-stone-400">
               暂无文档，请先到首页上传文档
             </div>
           ) : (
@@ -226,14 +226,14 @@ export default function Quiz() {
                     key={meta.id}
                     type="button"
                     onClick={() => startQuiz(meta.id)}
-                    className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-5 py-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
+                    className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-5 py-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md dark:border-stone-700/60 dark:bg-stone-900"
                   >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
                       <FileText size={18} strokeWidth={1.8} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-stone-800">{meta.title}</p>
-                      <p className="mt-1 text-xs text-stone-500">{count} 个重点内容</p>
+                      <p className="truncate text-sm font-medium text-stone-800 dark:text-stone-100">{meta.title}</p>
+                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">{count} 个重点内容</p>
                     </div>
                   </button>
                 );
@@ -253,43 +253,43 @@ export default function Quiz() {
 
   if (phase === 'result') {
     return (
-      <div className="min-h-screen bg-[#F9F7F2]">
-        <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur">
+      <div className="min-h-screen bg-[#F9F7F2] dark:bg-[#0C0A09]">
+        <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur dark:border-stone-700/60 dark:bg-[#0C0A09]/90">
           <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3 sm:px-6">
             <button
               type="button"
               onClick={() => setPhase('select')}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-stone-100"
               aria-label="返回选择文档"
             >
               <ArrowLeft size={18} />
             </button>
-            <h1 className="text-base font-medium text-stone-800">抽背结果</h1>
+            <h1 className="text-base font-medium text-stone-800 dark:text-stone-100">抽背结果</h1>
           </div>
         </header>
 
         <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-          <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center shadow-sm">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+          <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center shadow-sm dark:border-stone-700/60 dark:bg-stone-900">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
               <Trophy size={28} />
             </div>
-            <h2 className="mb-2 text-lg font-medium text-stone-800">本次抽背完成</h2>
-            <p className="mb-6 text-sm text-stone-500">文档「{docTitle}」共 {result.total} 题</p>
+            <h2 className="mb-2 text-lg font-medium text-stone-800 dark:text-stone-100">本次抽背完成</h2>
+            <p className="mb-6 text-sm text-stone-500 dark:text-stone-400">文档「{docTitle}」共 {result.total} 题</p>
             <div className="mb-8 flex justify-center gap-6">
               <div className="text-center">
-                <p className="text-2xl font-semibold text-green-600">{result.mastered.length}</p>
-                <p className="mt-1 text-xs text-stone-500">已掌握</p>
+                <p className="text-2xl font-semibold text-green-600 dark:text-green-400">{result.mastered.length}</p>
+                <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">已掌握</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-semibold text-red-500">{result.unmastered.length}</p>
-                <p className="mt-1 text-xs text-stone-500">未掌握</p>
+                <p className="text-2xl font-semibold text-red-500 dark:text-red-400">{result.unmastered.length}</p>
+                <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">未掌握</p>
               </div>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
               <button
                 type="button"
                 onClick={() => setPhase('select')}
-                className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50"
+                className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800"
               >
                 换一篇文档
               </button>
@@ -305,7 +305,7 @@ export default function Quiz() {
                 <button
                   type="button"
                   onClick={() => navigate('/unmastered')}
-                  className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100"
+                  className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/15 dark:text-red-400 dark:hover:bg-red-500/20"
                 >
                   <BookOpenCheck size={14} />
                   查看没掌握清单（{unmastered.length}）
@@ -341,44 +341,44 @@ export default function Quiz() {
             <ArrowLeft size={18} />
           </button>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-base font-medium text-stone-800">{docTitle}</h1>
-            <p className="text-xs text-stone-500">
+            <h1 className="truncate text-base font-medium text-stone-800 dark:text-stone-100">{docTitle}</h1>
+            <p className="text-xs text-stone-500 dark:text-stone-400">
               第 {currentIndex + 1}/{queue.length} 题
             </p>
           </div>
-          <span className="text-xs text-stone-400">已答 {answeredCount} 题</span>
+          <span className="text-xs text-stone-400 dark:text-stone-500">已答 {answeredCount} 题</span>
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-        <div className="rounded-2xl border border-stone-200 bg-white p-8 shadow-sm">
-          <p className="mb-6 text-sm text-stone-500">
+        <div className="rounded-2xl border border-stone-200 bg-white p-8 shadow-sm dark:border-stone-700/60 dark:bg-stone-900">
+          <p className="mb-6 text-sm text-stone-500 dark:text-stone-400">
             请回忆划线部分的内容，点击「显示答案」查看对照：
           </p>
 
           {/* 内容展示区 */}
-          <div className="mb-8 min-h-[96px] rounded-xl border border-dashed border-stone-300 bg-stone-50 px-6 py-5">
+          <div className="mb-8 min-h-[96px] rounded-xl border border-dashed border-stone-300 bg-stone-50 px-6 py-5 dark:border-stone-700 dark:bg-stone-800/60">
             {revealed ? (
               /* “显示答案”：重点 + 上一节点主题 + 上下文 */
               <div>
                 {currentItem.heading && (
-                  <p className="mb-1 text-xs font-medium text-amber-600">主题：{currentItem.heading}</p>
+                  <p className="mb-1 text-xs font-medium text-amber-600 dark:text-amber-400">主题：{currentItem.heading}</p>
                 )}
-                <p className="text-xl font-semibold text-stone-800">{currentItem.text}</p>
+                <p className="text-xl font-semibold text-stone-800 dark:text-stone-100">{currentItem.text}</p>
                 {currentItem.sentence && (
-                  <p className="mt-2 text-sm leading-relaxed text-stone-500">{currentItem.sentence}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-500 dark:text-stone-400">{currentItem.sentence}</p>
                 )}
               </div>
             ) : (
               /* 初始状态：展示题干（重点处以占位横线隐藏），供用户根据上下文回忆 */
               <div>
                 {currentItem.heading && (
-                  <p className="mb-2 text-xs font-medium text-amber-600">主题：{currentItem.heading}</p>
+                  <p className="mb-2 text-xs font-medium text-amber-600 dark:text-amber-400">主题：{currentItem.heading}</p>
                 )}
-                <p className="text-base leading-relaxed text-stone-800">
+                <p className="text-base leading-relaxed text-stone-800 dark:text-stone-100">
                   {renderPrompt(currentItem.prompt, `q${currentIndex}`)}
                 </p>
-                <p className="mt-4 flex items-center justify-center text-xs text-stone-400">
+                <p className="mt-4 flex items-center justify-center text-xs text-stone-400 dark:text-stone-500">
                   <EyeOff size={14} className="mr-1.5" />
                   划线部分已隐藏，请根据上下文回忆并填空
                 </p>
@@ -402,7 +402,7 @@ export default function Quiz() {
               <button
                 type="button"
                 onClick={handleNotMastered}
-                className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-5 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+                className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-5 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/15 dark:text-red-400 dark:hover:bg-red-500/20"
               >
                 <X size={15} />
                 没掌握
@@ -410,7 +410,7 @@ export default function Quiz() {
               <button
                 type="button"
                 onClick={handleMastered}
-                className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-5 py-2.5 text-sm font-medium text-green-600 transition-colors hover:bg-green-100"
+                className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-5 py-2.5 text-sm font-medium text-green-600 transition-colors hover:bg-green-100 dark:border-green-500/30 dark:bg-green-500/15 dark:text-green-400 dark:hover:bg-green-500/20"
               >
                 <Check size={15} />
                 掌握了
@@ -423,7 +423,7 @@ export default function Quiz() {
           <button
             type="button"
             onClick={() => (isReview ? navigate('/unmastered') : setPhase('select'))}
-            className="text-sm text-stone-500 underline-offset-4 hover:text-stone-700 hover:underline"
+            className="text-sm text-stone-500 underline-offset-4 hover:text-stone-700 hover:underline dark:text-stone-400 dark:hover:text-stone-100"
           >
             {isReview ? '返回没掌握清单' : '返回选择文档'}
           </button>

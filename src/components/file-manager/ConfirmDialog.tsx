@@ -30,13 +30,13 @@ export function ConfirmDialog({
       aria-modal="true"
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl dark:bg-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
           <h2
             className={`flex items-center gap-2 text-base font-medium ${
-              danger ? 'text-red-600' : 'text-stone-800'
+              danger ? 'text-red-600 dark:text-red-400' : 'text-stone-800 dark:text-stone-100'
             }`}
           >
             <AlertTriangle size={18} />
@@ -45,18 +45,18 @@ export function ConfirmDialog({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 dark:text-stone-500 dark:hover:bg-stone-800"
             aria-label="关闭"
           >
             <X size={16} />
           </button>
         </div>
-        <p className="mb-6 text-sm text-stone-700">{message}</p>
+        <p className="mb-6 text-sm text-stone-700 dark:text-stone-200">{message}</p>
         <div className="flex justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50"
+            className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800"
           >
             取消
           </button>

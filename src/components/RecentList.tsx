@@ -25,38 +25,38 @@ function formatLastRead(timestamp: number): string {
 export function RecentList({ documents, onSelect, onRemove }: RecentListProps) {
   if (documents.length === 0) {
     return (
-      <div className="rounded-xl bg-stone-100/50 px-6 py-10 text-center text-sm text-stone-500">
+      <div className="rounded-xl bg-stone-100/50 px-6 py-10 text-center text-sm text-stone-500 dark:bg-stone-800/50 dark:text-stone-400">
         暂无阅读记录，上传文档开始阅读
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       {documents.map((doc) => (
         <div
           key={doc.id}
-          className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
+          className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white px-4 py-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md dark:border-stone-700/60 dark:bg-stone-900"
         >
           <button
             type="button"
             onClick={() => onSelect(doc.id)}
-            className="flex flex-1 items-center gap-4 text-left"
+            className="flex flex-1 items-center gap-3 text-left"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
               <Clock size={18} strokeWidth={1.8} />
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="truncate text-sm font-medium text-stone-800">{doc.title}</h4>
-              <div className="mt-1 flex items-center gap-3 text-xs text-stone-500">
+              <h4 className="truncate text-sm font-medium text-stone-800 dark:text-stone-100">{doc.title}</h4>
+              <div className="mt-1 flex items-center gap-3 text-xs text-stone-500 dark:text-stone-400">
                 <span>{formatLastRead(doc.lastReadAt)}</span>
                 <span className="flex items-center gap-1">
                   进度
-                  <span className="font-medium text-amber-600">{Math.round(doc.progressPercent)}%</span>
+                  <span className="font-medium text-amber-600 dark:text-amber-400">{Math.round(doc.progressPercent)}%</span>
                 </span>
               </div>
             </div>
-            <ChevronRight size={18} className="text-stone-300 transition-colors group-hover:text-amber-500" />
+            <ChevronRight size={18} className="text-stone-300 transition-colors group-hover:text-amber-500 dark:text-stone-500" />
           </button>
           <button
             type="button"
@@ -64,7 +64,7 @@ export function RecentList({ documents, onSelect, onRemove }: RecentListProps) {
               e.stopPropagation();
               onRemove(doc.id);
             }}
-            className="ml-3 flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-red-50 hover:text-red-500"
+            className="ml-3 flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:text-stone-500 dark:hover:bg-red-500/15 dark:hover:text-red-400"
             aria-label="删除记录"
           >
             <Trash2 size={16} />

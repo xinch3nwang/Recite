@@ -17,6 +17,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 夜间模式：切换根配色，让原生控件（滚动条/下拉/取色器）跟随深色 */
+.dark {
+  color-scheme: dark;
+  color: #E7E5E4;
+  background-color: #0C0A09;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -52,8 +59,133 @@ body {
 /* Document typography overrides */
 .recite-document-content {
   font-family: "Noto Serif SC", Georgia, serif;
-  line-height: 1.85;
+  line-height: 1.8;
   color: #1A202C;
+}
+
+/* 阅读背诵：幕布大纲节点列表 —— 层级清晰、缩进紧凑、简洁点标记 */
+.recite-document-content ul.node-list,
+.recite-document-content ol.node-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: none;
+}
+.recite-document-content ul.node-list ul.node-list,
+.recite-document-content ul.node-list ol.node-list,
+.recite-document-content ol.node-list ul.node-list,
+.recite-document-content ol.node-list ol.node-list {
+  /* 节点前已有圆点作标记，不再使用竖向连接线，避免视觉元素冲突与信息冗余 */
+  padding-left: 16px;
+}
+.recite-document-content li.node {
+  position: relative;
+  margin: 0.35rem 0;
+  /* 首行文本垂直中心（相对 li 字号，行高 1.8）：嵌套节点文本 1em → 0.9em */
+  --fold-center: 0.9em;
+}
+/* 顶层节点（字号放大 1.15em）：首行中心相应下移，保证圆点/三角精确居中 */
+.recite-document-content ul.node-list > li.node {
+  --fold-center: 1.035em;
+}
+/* 嵌套层级节点：还原为基准行高中心 */
+.recite-document-content li.node .children ul.node-list > li.node {
+  --fold-center: 0.9em;
+}
+/* 节点点标记：简洁的单一实心圆点（替代原先「外圈+内点」的双层设计），
+   并贴近文本，将点后留白缩小约 50% */
+.recite-document-content li.node > .bullet {
+  position: absolute;
+  left: -12px;
+  top: var(--fold-center);
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #a8906c;
+}
+.recite-document-content li.node > .bullet > .bullet-dot {
+  display: none;
+}
+/* 含子节点的上级节点：点稍大且颜色更深，突出其为可展开的父层级 */
+.recite-document-content li.node:has(> .children) > .bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #8a7a57;
+}
+.recite-document-content .content.mm-editor {
+  display: block;
+}
+
+/* 标题 div 已在顶部状态栏展示，隐藏正文中的标题，避免重复呈现 */
+.recite-document-content div.title {
+  display: none;
+}
+
+/* 最高层级（顶层）节点：放大字号，使其在视觉上区别于其他层级 */
+.recite-document-content ul.node-list > li.node > .content {
+  font-size: 1.15em;
+}
+/* 嵌套层级节点：回到基准字号（还原顶层放大效果） */
+.recite-document-content li.node .children ul.node-list > li.node > .content {
+  font-size: 1em;
+}
+
+/* 最高层级（顶层）节点：在圆点正下方添加竖向线，向下延伸至该节点整棵子树底部，标识整个节点范围 */
+.recite-document-content ul.node-list > li.node::after {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 1rem;
+  bottom: 0.25rem;
+  width: 1px;
+  transform: translateX(-0.5px);
+  background: linear-gradient(rgba(168, 144, 108, 0.5), rgba(168, 144, 108, 0.1));
+  pointer-events: none;
+}
+/* 嵌套层级节点：移除竖向线，仅保留顶层标记 */
+.recite-document-content li.node .children ul.node-list > li.node::after {
+  display: none;
+}
+
+/* 节点解释（note）面板：比正文更小的字号 + 低饱和度灰色，弱化视觉层级但仍保持可读 */
+.recite-document-content li.node > .note.mm-editor {
+  font-size: 0.85em;
+  color: #757575;
+  line-height: 1.6;
+  margin-top: 0.3em;
+}
+
+/* 阅读折叠：含子节点的节点，其圆点即折叠开关（不额外占用空间）。
+   展开=圆点，折叠=实心三角 ▶，直观区分折叠状态；子树隐藏但节点内容保留。
+   通过 grid-template-rows 0fr/1fr 实现平滑折叠/展开动画，无需固定高度、适配任意缩进深度。 */
+.recite-document-content li.node.is-foldable > .bullet {
+  cursor: pointer;
+}
+.recite-document-content li.node.is-foldable:hover > .bullet {
+  box-shadow: 0 0 0 3px rgba(168, 144, 108, 0.18);
+}
+.recite-document-content li.node.is-foldable.is-collapsed > .bullet {
+  width: 0;
+  height: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border: 0.25em solid transparent;
+  border-left-color: #8a7a57;
+  left: -11px;
+}
+/* 子树：默认展开（1fr），折叠时平滑收拢为 0fr 并隐藏内容 */
+.recite-document-content li.node > .children {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.28s ease;
+}
+.recite-document-content li.node > .children > .node-list {
+  min-height: 0;
+  overflow: hidden;
+}
+.recite-document-content li.node.is-collapsed > .children {
+  grid-template-rows: 0fr;
 }
 
 .recite-document-content .underline {
@@ -76,8 +208,18 @@ body {
   color: #1A202C;
   margin-top: 1.5em;
   margin-bottom: 0.75em;
+  /* 标题字号比正文稍大，突出视觉层级 */
+  font-size: 1.6rem;
 }
-
+.recite-document-content h2 {
+  font-size: 1.4rem;
+}
+.recite-document-content h3 {
+  font-size: 1.25rem;
+}
+.recite-document-content h4 {
+  font-size: 1.15rem;
+}
 .recite-document-content p {
   margin-bottom: 1.25em;
 }
@@ -116,4 +258,80 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* 开屏 logo 入场动画 */
+@keyframes splashEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 大纲编辑器：空节点占位提示 */
+.outline-editable:empty::before {
+  content: attr(data-placeholder);
+  color: #d6d3d1;
+  pointer-events: none;
+}
+
+/* ============ 夜间模式（.dark）补充配色 ============ */
+/* 阅读正文与标题：深色底上的浅色文本。
+   文章底为 stone-900(#1C1917)，正文色 #E7E5E4 对比度约 14.5:1、
+   标题 #FAFAF9 约 15.5:1，均远高于 WCAG AA(≥4.5:1)。 */
+.dark .recite-document-content,
+.dark .recite-document-content h1,
+.dark .recite-document-content h2,
+.dark .recite-document-content h3,
+.dark .recite-document-content h4 {
+  color: #E7E5E4;
+}
+/* 兜底覆盖 tailwind typography 的 dark:prose-invert 变量：
+   确保正文/标题/加粗/链接等字体颜色在深色下满足 WCAG AA 对比度，
+   而不被 prose 插件默认的偏灰字色（对比度不足）覆盖。 */
+.dark .recite-document-content .prose {
+  --tw-prose-body: #E7E5E4;      /* 正文：14.5:1 ✓ */
+  --tw-prose-headings: #FAFAF9;  /* 标题：15.5:1 ✓ */
+  --tw-prose-bold: #FAFAF9;      /* 加粗 */
+  --tw-prose-lead: #D6D3D1;      /* 引导段：约 10:1 ✓ */
+  --tw-prose-links: #FBBF24;     /* 链接：琥珀-400，约 10:1 ✓ */
+  --tw-prose-counters: #D6D3D1;
+  --tw-prose-bullets: #A8A29E;   /* 项目符号（非文本，仅图标） */
+  --tw-prose-quote-borders: #57534E;
+  --tw-prose-captions: #A8A29E;  /* 图表注：约 7:1 ✓ */
+  --tw-prose-code: #FAFAF9;
+  --tw-prose-th-borders: #57534E;
+  --tw-prose-td-borders: #44403C;
+  --tw-prose-th-bg: #292524;
+}
+/* 节点解释（note）：比正文略弱化但保持 AA 可读（#A8A29E 对 #1C1917 约 7:1） */
+/* 节点解释：深色下更柔和的弱化灰 */
+.dark .recite-document-content li.node > .note.mm-editor {
+  color: #A8A29E;
+}
+/* 表格线框与表头背景 */
+.dark .recite-document-content th,
+.dark .recite-document-content td {
+  border-color: #44403C;
+}
+.dark .recite-document-content th {
+  background-color: #292524;
+}
+/* 重点划线/荧光笔：深色底上用更深的琥珀底色，避免过亮刺眼 */
+.dark .recite-document-content .underline {
+  background-color: rgba(217, 119, 6, 0.26);
+}
+.dark .recite-highlight-placeholder {
+  background-color: rgba(217, 119, 6, 0.26);
+}
+.dark .recite-highlight-placeholder:hover {
+  background-color: rgba(217, 119, 6, 0.4);
+}
+/* 编辑器空节点占位：深色下的弱化提示 */
+.dark .outline-editable:empty::before {
+  color: #57534E;
 }

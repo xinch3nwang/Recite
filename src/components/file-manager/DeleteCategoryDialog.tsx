@@ -57,7 +57,7 @@ export function DeleteCategoryDialog({
       aria-modal="true"
     >
       <div
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
@@ -68,23 +68,23 @@ export function DeleteCategoryDialog({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 dark:text-stone-500 dark:hover:bg-stone-800"
             aria-label="关闭"
           >
             <X size={16} />
           </button>
         </div>
 
-        <p className="mb-1 text-sm text-stone-700">
+        <p className="mb-1 text-sm text-stone-700 dark:text-stone-200">
           确定删除分类「<span className="font-medium">{category.name}</span>」吗？此操作不可撤销。
         </p>
-        <p className="mb-4 text-xs text-stone-500">
-          该分类及其子分类下共 <span className="font-medium text-red-500">{affectedDocCount}</span> 个文档，
+        <p className="mb-4 text-xs text-stone-500 dark:text-stone-400">
+          该分类及其子分类下共 <span className="font-medium text-red-500 dark:text-red-400">{affectedDocCount}</span> 个文档，
           请选择处理方式：
         </p>
 
         <div className="mb-4 space-y-3">
-          <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-stone-200 p-3 hover:border-amber-300">
+          <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-stone-200 p-3 hover:border-amber-300 dark:border-stone-700/60">
             <input
               type="radio"
               name="strategy"
@@ -92,14 +92,14 @@ export function DeleteCategoryDialog({
               onChange={() => setStrategy('move')}
               className="mt-0.5 accent-amber-500"
             />
-            <span className="flex-1 text-sm text-stone-700">
+            <span className="flex-1 text-sm text-stone-700 dark:text-stone-200">
               将文档移动到其他分类
               {strategy === 'move' && (
                 <select
                   value={targetId}
                   onChange={(e) => setTargetId(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
-                  className="mt-2 block w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500"
+                  className="mt-2 block w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500 dark:border-stone-700 dark:bg-stone-900"
                 >
                   <option value="none">未分类</option>
                   {targetOptions.map((cat) => (
@@ -112,7 +112,7 @@ export function DeleteCategoryDialog({
             </span>
           </label>
 
-          <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-stone-200 p-3 hover:border-red-300">
+          <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-stone-200 p-3 hover:border-red-300 dark:border-stone-700/60">
             <input
               type="radio"
               name="strategy"
@@ -120,7 +120,7 @@ export function DeleteCategoryDialog({
               onChange={() => setStrategy('delete')}
               className="mt-0.5 accent-red-500"
             />
-            <span className="flex-1 text-sm text-red-600">
+            <span className="flex-1 text-sm text-red-600 dark:text-red-400">
               连同分类下的文档一起删除（{affectedDocCount} 个文档将被永久删除）
             </span>
           </label>
@@ -130,7 +130,7 @@ export function DeleteCategoryDialog({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50"
+            className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800"
           >
             取消
           </button>

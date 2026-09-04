@@ -54,63 +54,63 @@ export default function Unmastered() {
   }, [clearUnmastered]);
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2]">
-      <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-[#0C0A09]">
+      <header className="sticky top-0 z-30 border-b border-stone-200 bg-[#F9F7F2]/90 backdrop-blur dark:border-stone-700/60 dark:bg-[#0C0A09]/90">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3 sm:px-6">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-stone-100"
             aria-label="返回上一页"
           >
             <ArrowLeft size={18} />
           </button>
-          <h1 className="flex items-center gap-2 text-base font-medium text-stone-800">
+          <h1 className="flex items-center gap-2 text-base font-medium text-stone-800 dark:text-stone-100">
             <BookOpenCheck size={18} className="text-amber-500" />
             没掌握清单
           </h1>
-          <span className="ml-auto text-xs text-stone-400">{unmastered.length} 项</span>
+          <span className="ml-auto text-xs text-stone-400 dark:text-stone-500">{unmastered.length} 项</span>
         </div>
       </header>
 
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         {unmastered.length === 0 ? (
-          <div className="rounded-xl bg-stone-100/50 px-6 py-16 text-center text-sm text-stone-500">
+          <div className="rounded-xl bg-stone-100/50 px-6 py-16 text-center text-sm text-stone-500 dark:bg-stone-800/50 dark:text-stone-400">
             <p className="mb-2">暂无没掌握内容</p>
-            <p className="text-xs text-stone-400">抽背时点击「没掌握」的内容会自动加入此清单</p>
+            <p className="text-xs text-stone-400 dark:text-stone-500">抽背时点击「没掌握」的内容会自动加入此清单</p>
           </div>
         ) : (
           <div className="space-y-3">
             {unmastered.map((item) => (
               <div
                 key={item.id}
-                className="rounded-xl border border-stone-200 bg-white px-5 py-4 shadow-sm transition-shadow hover:shadow-md"
+                className="rounded-xl border border-stone-200 bg-white px-5 py-4 shadow-sm transition-shadow hover:shadow-md dark:border-stone-700/60 dark:bg-stone-900"
               >
                 <div className="flex items-start gap-3">
                   <div className="min-w-0 flex-1">
                     {/* 重点内容 + 文档/主题 */}
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-base font-semibold text-stone-800">{item.text}</p>
+                      <p className="text-base font-semibold text-stone-800 dark:text-stone-100">{item.text}</p>
                       {item.heading && (
-                        <span className="rounded bg-amber-50 px-1.5 py-0.5 text-[11px] text-amber-600">
+                        <span className="rounded bg-amber-50 px-1.5 py-0.5 text-[11px] text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
                           {item.heading}
                         </span>
                       )}
                     </div>
-                    <p className="mt-1 text-xs text-stone-500">
+                    <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
                       {item.docTitle}
                       {item.categoryName && (
-                        <span className="ml-2 inline-flex items-center gap-0.5 text-stone-400">
+                        <span className="ml-2 inline-flex items-center gap-0.5 text-stone-400 dark:text-stone-500">
                           <Tag size={11} />
                           {item.categoryName}
                         </span>
                       )}
                     </p>
                     {/* 完整原句 */}
-                    <p className="mt-2 rounded-lg bg-stone-50 px-3 py-2 text-sm leading-relaxed text-stone-600">
+                    <p className="mt-2 rounded-lg bg-stone-50 px-3 py-2 text-sm leading-relaxed text-stone-600 dark:bg-stone-800/60 dark:text-stone-300">
                       {item.sentence}
                     </p>
-                    <p className="mt-2 flex items-center gap-1 text-[11px] text-stone-400">
+                    <p className="mt-2 flex items-center gap-1 text-[11px] text-stone-400 dark:text-stone-500">
                       <Clock size={11} />
                       {formatTime(item.quizzedAt)}
                     </p>
@@ -120,7 +120,7 @@ export default function Unmastered() {
                     <button
                       type="button"
                       onClick={() => handleReview([item.id])}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 transition-colors hover:bg-amber-100"
+                      className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 transition-colors hover:bg-amber-100 dark:bg-amber-500/15 dark:text-amber-400 dark:hover:bg-amber-500/20"
                       aria-label="复习该条"
                       title="针对性复习该条"
                     >
@@ -129,7 +129,7 @@ export default function Unmastered() {
                     <button
                       type="button"
                       onClick={() => removeUnmastered(item.id)}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                      className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:text-stone-500 dark:hover:bg-red-500/15 dark:hover:text-red-400"
                       aria-label="删除该条"
                       title="从清单移除"
                     >
@@ -145,7 +145,7 @@ export default function Unmastered() {
 
       {/* 底部操作栏 */}
       {unmastered.length > 0 && (
-        <div className="sticky bottom-4 z-40 mx-auto mb-4 flex w-max max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 shadow-lg">
+        <div className="sticky bottom-4 z-40 mx-auto mb-4 flex w-max max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 shadow-lg dark:border-stone-700/60 dark:bg-stone-900">
           <button
             type="button"
             onClick={() => handleReview()}
@@ -157,7 +157,7 @@ export default function Unmastered() {
           <button
             type="button"
             onClick={handleClear}
-            className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+            className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/15 dark:text-red-400 dark:hover:bg-red-500/20"
           >
             <ListX size={14} />
             清空清单

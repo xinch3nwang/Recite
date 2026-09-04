@@ -44,14 +44,14 @@ function TreeItem({
       <div
         className={[
           'group flex cursor-pointer items-center gap-1 rounded-lg py-2 pr-2 text-sm transition-colors',
-          isSelected ? 'bg-amber-100 text-amber-900' : 'text-stone-700 hover:bg-stone-100',
+          isSelected ? 'bg-amber-100 text-amber-900 dark:bg-amber-500/20 dark:text-amber-300' : 'text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-800',
         ].join(' ')}
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
         onClick={() => onSelect(node.id)}
       >
         <button
           type="button"
-          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-stone-400 hover:bg-stone-200"
+          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-stone-400 hover:bg-stone-200 dark:text-stone-500 dark:hover:bg-stone-700"
           onClick={(e) => {
             e.stopPropagation();
             if (hasChildren) setExpanded((v) => !v);
@@ -74,7 +74,7 @@ function TreeItem({
               e.stopPropagation();
               onEdit(node);
             }}
-            className="flex h-6 w-6 items-center justify-center rounded text-stone-400 hover:bg-amber-50 hover:text-amber-600"
+            className="flex h-6 w-6 items-center justify-center rounded text-stone-400 hover:bg-amber-50 hover:text-amber-600 dark:text-stone-500 dark:hover:bg-amber-500/15"
             aria-label="编辑分类"
           >
             <Pencil size={13} />
@@ -85,7 +85,7 @@ function TreeItem({
               e.stopPropagation();
               onDelete(node);
             }}
-            className="flex h-6 w-6 items-center justify-center rounded text-stone-400 hover:bg-red-50 hover:text-red-500"
+            className="flex h-6 w-6 items-center justify-center rounded text-stone-400 hover:bg-red-50 hover:text-red-500 dark:text-stone-500 dark:hover:bg-red-500/15"
             aria-label="删除分类"
           >
             <Trash2 size={13} />
@@ -127,13 +127,13 @@ export function CategoryTree({
         className={[
           'flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors',
           selectedId === null
-            ? 'bg-amber-100 font-medium text-amber-900'
-            : 'text-stone-700 hover:bg-stone-100',
+            ? 'bg-amber-100 font-medium text-amber-900 dark:bg-amber-500/20 dark:text-amber-300'
+            : 'text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-800',
         ].join(' ')}
       >
         <FolderOpen size={15} className="shrink-0 text-amber-500" />
         <span className="flex-1 text-left">全部文档</span>
-        <span className="text-xs text-stone-400">{totalCount}</span>
+        <span className="text-xs text-stone-400 dark:text-stone-500">{totalCount}</span>
       </button>
       {tree.map((node) => (
         <TreeItem

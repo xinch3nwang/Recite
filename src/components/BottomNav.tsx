@@ -17,7 +17,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur dark:border-stone-700/60 dark:bg-stone-900/95"
       aria-label="底部导航"
     >
       <div className="mx-auto flex max-w-3xl">
@@ -30,7 +30,7 @@ export default function BottomNav() {
               onClick={() => navigate(path)}
               aria-current={isActive ? 'page' : undefined}
               className={`relative flex flex-1 flex-col items-center gap-1 py-2.5 text-xs transition-colors ${
-                isActive ? 'text-amber-600' : 'text-stone-500 hover:text-stone-700'
+                isActive ? 'text-amber-600 dark:text-amber-400' : 'text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-100'
               }`}
             >
               <span

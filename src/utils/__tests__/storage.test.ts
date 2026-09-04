@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   saveDocument,
   getDocument,
@@ -22,6 +22,7 @@ import {
   removeUnmasteredItem,
   removeUnmasteredByDocIds,
   clearUnmasteredList,
+  updateDocumentContent,
   type UnmasteredItem,
 } from '@/utils/storage';
 
@@ -180,5 +181,41 @@ describe('没掌握清单', () => {
     addUnmasteredItems([makeItem('u1', 'd1', 'A', 1)]);
     clearUnmasteredList();
     expect(getUnmasteredList()).toEqual([]);
+  });
+});
+
+describe('文档正文事务更新', () => {
+  it('应用 updater 更新正文并刷新更新时间', () => {
+    saveDocument(makeDoc('d1', { content: '<h1>旧</h1>' }));
+    const result = updateDocumentContent('d1', (content) => content.replace('旧', '新'));
+    expect(result.ok).toBe(true);
+    expect(result.doc?.content).toBe('<h1>新</h1>');
+    expect(getDocument('d1')?.content).toBe('<h1>新</h1>');
+  });
+
+  it('文档不存在时返回错误且不写入', () => {
+    const result = updateDocumentContent('missing', (c) => c);
+    expect(result.ok).toBe(false);
+    expect(result.error).toBeTruthy();
+    expect(getDocument('missing')).toBeNull();
+  });
+
+  it('写入异常时回滚到写入前状态（原子性）', () => {
+    saveDocument(makeDoc('d1', { content: '<p>原始</p>' }));
+    const spy = vi
+      .spyOn(Storage.prototype, 'setItem')
+      .mockImplementationOnce(() => {
+        throw new Error('QuotaExceededError');
+      });
+    const result = updateDocumentContent('d1', (c) => c + '<p>新</p>');
+    spy.mockRestore();
+    expect(result.ok).toBe(false);
+    expect(getDocument('d1')?.content).toBe('<p>原始</p>'); // 回滚
+  });
+
+  it('保留文档类型字段（mindmap）', () => {
+    saveDocument({ ...makeDoc('d1'), type: 'mindmap' });
+    updateDocumentContent('d1', (c) => c);
+    expect(getDocument('d1')?.type).toBe('mindmap');
   });
 });

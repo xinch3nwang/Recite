@@ -7,7 +7,13 @@ import Reader from '@/pages/Reader';
 import FileManager from '@/pages/FileManager';
 import Quiz from '@/pages/Quiz';
 import Unmastered from '@/pages/Unmastered';
+import SearchPage from '@/pages/SearchPage';
+import Editor from '@/pages/Editor';
+import MindMap from '@/pages/MindMap';
+import ShareView from '@/pages/ShareView';
 import BottomNav from '@/components/BottomNav';
+import { SplashScreen } from '@/components/SplashScreen';
+import { ThemeProvider } from '@/hooks/useTheme';
 import { useReciteStore } from '@/store/useReciteStore';
 
 // 安卓返回键：阅读页返回首页，首页退出应用
@@ -39,6 +45,12 @@ function BackButtonHandler() {
       if (location.pathname === '/reader') {
         const from = new URLSearchParams(location.search).get('from');
         navigate(from === 'files' ? '/files' : '/', { replace: true });
+      } else if (location.pathname === '/editor') {
+        // 编辑页自行处理返回（含未保存更改确认），此处不再导航
+        return;
+      } else if (location.pathname === '/diagram') {
+        // 思维导图编辑页返回文件管理
+        navigate('/files', { replace: true });
       } else {
         navigate('/', { replace: true });
       }
@@ -66,6 +78,10 @@ function MainLayout() {
         <Route path="/files" element={<FileManager />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/unmastered" element={<Unmastered />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/editor" element={<Editor />} />
+        <Route path="/diagram" element={<MindMap />} />
+        <Route path="/share/:shareId" element={<ShareView />} />
       </Routes>
     </>
   );
@@ -73,9 +89,12 @@ function MainLayout() {
 
 export default function App() {
   return (
-    <Router>
-      <BackButtonHandler />
-      <MainLayout />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <SplashScreen />
+        <BackButtonHandler />
+        <MainLayout />
+      </Router>
+    </ThemeProvider>
   );
 }

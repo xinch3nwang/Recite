@@ -29,32 +29,32 @@ export function MoveDocsDialog({ open, count, categories, onClose, onConfirm }: 
       aria-modal="true"
     >
       <div
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-base font-medium text-stone-800">
+          <h2 className="flex items-center gap-2 text-base font-medium text-stone-800 dark:text-stone-100">
             <FolderInput size={18} className="text-amber-500" />
             移动文档
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 dark:text-stone-500 dark:hover:bg-stone-800"
             aria-label="关闭"
           >
             <X size={16} />
           </button>
         </div>
 
-        <p className="mb-4 text-sm text-stone-700">
-          将选中的 <span className="font-medium text-amber-600">{count}</span> 个文档移动到：
+        <p className="mb-4 text-sm text-stone-700 dark:text-stone-200">
+          将选中的 <span className="font-medium text-amber-600 dark:text-amber-400">{count}</span> 个文档移动到：
         </p>
 
         <select
           value={targetId}
           onChange={(e) => setTargetId(e.target.value)}
-          className="mb-5 w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500"
+          className="mb-5 w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-amber-500 dark:border-stone-700 dark:bg-stone-900"
         >
           <option value="none">未分类</option>
           {categories.map((cat) => (
@@ -68,7 +68,7 @@ export function MoveDocsDialog({ open, count, categories, onClose, onConfirm }: 
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50"
+            className="rounded-lg border border-stone-300 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800"
           >
             取消
           </button>

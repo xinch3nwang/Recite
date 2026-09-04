@@ -23,6 +23,8 @@ import {
   type SortKey,
   type SortDir,
 } from '@/utils/docQuery';
+import { parseHtmlToOutline } from '@/utils/outline';
+import { collectMatchingNodes, type MatchingNode } from '@/utils/nodeSearch';
 
 /** 模块级正文缓存（仅保留纯文本，用于全文检索） */
 const contentCache = new Map<string, string | null>();
@@ -101,6 +103,32 @@ export async function searchDocuments(
 /** 分页获取（默认每页 20 条） */
 export function getPage<T>(list: T[], page: number, pageSize = DEFAULT_PAGE_SIZE): T[] {
   return paginate(list, page, pageSize);
+}
+
+/** 节点级搜索结果：命中节点 + 所属文档信息 */
+export interface NodeSearchResult extends MatchingNode {
+  docId: string;
+  docTitle: string;
+}
+
+/**
+ * 全局节点全文搜索：跨所有普通文档（排除思维导图），返回所有命中关键词的节点内容，
+ * 每个结果包含节点文本、层级路径与所属文档，供搜索结果页展示。
+ * 逐篇解析正文，可能较慢，调用方应做防抖与加载态。
+ */
+export async function searchDocumentNodes(keyword: string): Promise<NodeSearchResult[]> {
+  const kw = keyword.trim();
+  if (!kw) return [];
+  const metas = getDocumentMetaList().filter((meta) => meta.type !== 'mindmap');
+  const results: NodeSearchResult[] = [];
+  for (const meta of metas) {
+    const doc = getDocument(meta.id);
+    if (!doc || !doc.content) continue;
+    const outline = parseHtmlToOutline(doc.content);
+    const matches = collectMatchingNodes(outline, kw);
+    matches.forEach((m) => results.push({ ...m, docId: meta.id, docTitle: meta.title }));
+  }
+  return results;
 }
 
 /** 批量移动文档到指定分类（categoryId 为 null 表示移出所有分类） */

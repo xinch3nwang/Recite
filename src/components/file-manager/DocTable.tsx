@@ -25,8 +25,8 @@ export function DocTable({
 }: DocTableProps) {
   if (metas.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl bg-stone-100/50 px-6 py-16 text-stone-500">
-        <Inbox size={32} className="mb-3 text-stone-300" />
+      <div className="flex flex-col items-center justify-center rounded-xl bg-stone-100/50 px-6 py-16 text-stone-500 dark:bg-stone-800/50 dark:text-stone-400">
+        <Inbox size={32} className="mb-3 text-stone-300 dark:text-stone-500" />
         <p className="text-sm">当前条件下没有文档</p>
       </div>
     );
@@ -35,11 +35,11 @@ export function DocTable({
   const allSelected = metas.length > 0 && metas.every((meta) => selectedIds.has(meta.id));
 
   return (
-    <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
-      {/* 桌面表格 */}
-      <table className="hidden w-full md:table">
+    <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm dark:border-stone-700/60 dark:bg-stone-900">
+      {/* 桌面表格：table-fixed 让名称列占据剩余空间，各列宽均衡，避免名称列被拉伸而右侧列过窄 */}
+      <table className="hidden w-full table-fixed md:table">
         <thead>
-          <tr className="border-b border-stone-200 bg-stone-50 text-left text-xs text-stone-500">
+          <tr className="border-b border-stone-200 bg-stone-50 text-left text-xs text-stone-500 dark:border-stone-700/60 dark:bg-stone-800/60 dark:text-stone-400">
             <th className="w-10 px-4 py-3">
               <input
                 type="checkbox"
@@ -50,16 +50,16 @@ export function DocTable({
               />
             </th>
             <th className="px-2 py-3 font-medium">文档名称</th>
-            <th className="w-36 px-2 py-3 font-medium">分类</th>
+            <th className="w-32 px-2 py-3 font-medium">分类</th>
             <th className="w-28 px-2 py-3 font-medium">上传时间</th>
-            <th className="w-20 px-2 py-3 text-right font-medium">访问</th>
+            <th className="w-28 px-2 py-3 text-right font-medium">访问</th>
           </tr>
         </thead>
         <tbody>
           {metas.map((meta) => (
             <tr
               key={meta.id}
-              className="group border-b border-stone-100 transition-colors hover:bg-amber-50/40"
+              className="group border-b border-stone-100 transition-colors hover:bg-amber-50/40 dark:border-stone-800 dark:hover:bg-amber-500/15"
             >
               <td className="px-4 py-3">
                 <input
@@ -74,10 +74,10 @@ export function DocTable({
                 <button
                   type="button"
                   onClick={() => onOpen(meta.id)}
-                  className="flex items-center gap-2 text-left text-sm text-stone-800 transition-colors hover:text-amber-600"
+                  className="flex w-full items-center gap-2 text-left text-sm text-stone-800 transition-colors hover:text-amber-600 dark:text-stone-100"
                 >
-                  <FileText size={15} className="shrink-0 text-stone-300 group-hover:text-amber-500" />
-                  <span className="max-w-[300px] truncate font-medium">{meta.title}</span>
+                  <FileText size={15} className="shrink-0 text-stone-300 group-hover:text-amber-500 dark:text-stone-500" />
+                  <span className="min-w-0 flex-1 truncate font-medium">{meta.title}</span>
                 </button>
               </td>
               <td className="px-2 py-3">
@@ -93,7 +93,7 @@ export function DocTable({
       </table>
 
       {/* 移动端卡片列表 */}
-      <ul className="divide-y divide-stone-100 md:hidden">
+      <ul className="divide-y divide-stone-100 md:hidden dark:divide-stone-800">
         {metas.map((meta) => (
           <li key={meta.id} className="flex items-center gap-3 px-4 py-3">
             <input
@@ -108,7 +108,7 @@ export function DocTable({
               onClick={() => onOpen(meta.id)}
               className="min-w-0 flex-1 text-left"
             >
-              <p className="truncate text-sm font-medium text-stone-800">{meta.title}</p>
+              <p className="truncate text-sm font-medium text-stone-800 dark:text-stone-100">{meta.title}</p>
               <p className="mt-0.5 text-xs text-stone-500">
                 {categoryName(meta.categoryId) || '未分类'} · {formatDate(meta.createdAt)}
               </p>

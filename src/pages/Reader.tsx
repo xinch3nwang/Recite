@@ -153,16 +153,26 @@ export default function Reader() {
     navigate(from === 'files' ? '/files' : '/', { replace: true });
   }, [navigate, currentDoc, progressPercent, addToRecent, saveCurrentProgress, searchParams]);
 
+  // 进入编辑：思维导图文档进入导图编辑器，普通文档进入大纲编辑器
+  const handleEdit = useCallback(() => {
+    if (!currentDoc) return;
+    if (currentDoc.type === 'mindmap') {
+      navigate(`/diagram?doc=${currentDoc.id}`);
+      return;
+    }
+    navigate(`/editor?doc=${currentDoc.id}`);
+  }, [currentDoc, navigate]);
+
   if (!currentDoc) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F9F7F2]">
-        <div className="text-stone-500">加载中...</div>
+      <div className="flex min-h-screen items-center justify-center bg-[#F9F7F2] dark:bg-[#0C0A09]">
+        <div className="text-stone-500 dark:text-stone-400">加载中...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2]">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-[#0C0A09]">
       <ProgressBar progress={progressPercent} />
       <ReaderToolbar
         title={currentDoc.title}
@@ -171,15 +181,17 @@ export default function Reader() {
         progressPercent={progressPercent}
         onBack={handleBack}
         onToggleHighlights={toggleHighlights}
+        onEdit={handleEdit}
       />
 
       <main
         className={[
-          'mx-auto max-w-4xl px-6 pb-24 pt-24 transition-opacity duration-500',
+          'mx-auto max-w-6xl px-3 pb-24 pt-24 transition-opacity duration-500 sm:px-6',
           loaded ? 'opacity-100' : 'opacity-0',
         ].join(' ')}
       >
-        <article className="recite-document-content rounded-xl border border-stone-200 bg-white px-8 py-12 shadow-sm sm:px-12 sm:py-16">
+        {/* 移动端：去除卡片边框/阴影/圆角以充分占用屏幕宽度；平板及以上恢复卡片盒子并加宽内边距保持行宽舒适 */}
+        <article className="recite-document-content bg-white px-3 py-8 sm:rounded-xl sm:border sm:border-stone-200 sm:px-10 sm:py-12 sm:shadow-sm dark:bg-stone-900 dark:sm:border-stone-700/60">
           <HtmlRenderer
             html={currentDoc.content}
             showHighlights={showHighlights}

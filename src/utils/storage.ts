@@ -2,6 +2,10 @@
  * 本地存储层：负责文档、阅读进度、最近阅读、文档索引与分类的持久化。
  * 所有读写均通过 localStorage，并对异常进行容错处理（读失败返回空值，写失败静默忽略）。
  */
+import { deleteDiagramForDoc } from '@/utils/diagramStorage';
+
+/** 文档类型：普通文档 / 思维导图文档 */
+export type DocumentType = 'document' | 'mindmap';
 
 export interface ReciteDocument {
   id: string;
@@ -11,6 +15,8 @@ export interface ReciteDocument {
   updatedAt: number;
   categoryId?: string | null;
   accessCount?: number;
+  /** 文档类型（缺省视为普通文档） */
+  type?: DocumentType;
 }
 
 export interface ReadingProgress {
@@ -35,6 +41,8 @@ export interface DocumentMeta {
   updatedAt: number;
   categoryId: string | null;
   accessCount: number;
+  /** 文档类型（缺省视为普通文档） */
+  type?: DocumentType;
 }
 
 export interface ReciteCategory {
@@ -107,7 +115,62 @@ export function metaFromDocument(doc: ReciteDocument): DocumentMeta {
     updatedAt: doc.updatedAt,
     categoryId: doc.categoryId ?? null,
     accessCount: doc.accessCount ?? 0,
+    type: doc.type ?? 'document',
   };
+}
+
+/* ---------------------------------- 文档正文事务更新 ---------------------------------- */
+
+/** 事务更新结果（ok=false 时 error 提供原因，ok=true 时 doc 为最新文档） */
+export interface ContentUpdateResult {
+  ok: boolean;
+  doc: ReciteDocument | null;
+  error: string | null;
+}
+
+/**
+ * 事务更新文档正文：读取当前文档 -> 应用 updater 得到新正文 -> 整体写入。
+ * - 文档不存在：不写入，返回错误；
+ * - 写入抛出异常：恢复写入前的备份，保证原子性（防止数据损坏）。
+ * updater 接收当前正文（HTML 字符串），返回新正文。
+ */
+export function updateDocumentContent(
+  docId: string,
+  updater: (content: string) => string
+): ContentUpdateResult {
+  const key = `${DOC_PREFIX}${docId}`;
+  let prevRaw: string | null = null;
+  try {
+    prevRaw = localStorage.getItem(key);
+    const doc = prevRaw ? (JSON.parse(prevRaw) as ReciteDocument) : null;
+    if (!doc) {
+      return { ok: false, doc: null, error: '文档不存在或已被删除' };
+    }
+    const next: ReciteDocument = {
+      ...doc,
+      content: updater(doc.content),
+      updatedAt: Date.now(),
+    };
+    localStorage.setItem(key, JSON.stringify(next));
+    upsertDocumentMeta(metaFromDocument(next));
+    return { ok: true, doc: next, error: null };
+  } catch (error) {
+    // 写入失败：回滚到写入前的状态
+    try {
+      if (prevRaw === null) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, prevRaw);
+      }
+    } catch {
+      // 回滚失败也不抛错，交由上层提示
+    }
+    return {
+      ok: false,
+      doc: null,
+      error: error instanceof Error ? error.message : '保存失败，请重试',
+    };
+  }
 }
 
 export function getDocumentMetaList(): DocumentMeta[] {
@@ -158,12 +221,13 @@ export function batchUpdateDocumentCategory(ids: string[], categoryId: string | 
   }
 }
 
-/** 删除单个文档（正文 + 索引 + 进度 + 最近记录） */
+/** 删除单个文档（正文 + 索引 + 进度 + 最近记录 + 编辑图数据） */
 export function deleteDocument(id: string): void {
   try {
     removeDocumentMeta(id);
     localStorage.removeItem(`${DOC_PREFIX}${id}`);
     localStorage.removeItem(`${PROGRESS_PREFIX}${id}`);
+    deleteDiagramForDoc(id);
     const recent = getRecentDocuments().filter((item) => item.id !== id);
     localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
   } catch {

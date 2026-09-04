@@ -11,8 +11,8 @@ export function FileUploader({ onFileSelect }: FileUploaderProps) {
   const [error, setError] = useState<string | null>(null);
 
   const validateFile = (file: File): boolean => {
-    const validTypes = ['text/html', 'application/xhtml+xml'];
-    const validExtensions = ['.html', '.htm'];
+    const validTypes = ['text/html', 'application/xhtml+xml', 'text/markdown'];
+    const validExtensions = ['.html', '.htm', '.md', '.markdown'];
     const hasValidType = validTypes.includes(file.type);
     const hasValidExtension = validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext));
     return hasValidType || hasValidExtension;
@@ -22,7 +22,7 @@ export function FileUploader({ onFileSelect }: FileUploaderProps) {
     (file: File) => {
       setError(null);
       if (!validateFile(file)) {
-        setError('请选择 .html 或 .htm 格式的文件');
+        setError('请选择 .html、.htm 或 .md 格式的文件');
         return;
       }
       onFileSelect(file);
@@ -61,30 +61,32 @@ export function FileUploader({ onFileSelect }: FileUploaderProps) {
         onDrop={handleDrop}
         className={[
           'group relative flex w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed',
-          'bg-white/60 px-8 py-14 text-center transition-all duration-300',
+          'bg-white/60 px-6 py-7 text-center transition-all duration-300',
           'hover:border-amber-500 hover:bg-white hover:shadow-lg',
           isDragging ? 'border-amber-500 bg-amber-50 shadow-lg' : 'border-stone-300',
+          'dark:bg-stone-900/60 dark:hover:bg-stone-800',
+          isDragging ? 'dark:bg-amber-500/15' : 'dark:border-stone-700',
         ].join(' ')}
       >
-        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-600 transition-transform duration-300 group-hover:scale-110">
-          <Upload size={28} strokeWidth={1.8} />
+        <div className="mb-2.5 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-600 transition-transform duration-300 group-hover:scale-110 dark:bg-amber-500/20 dark:text-amber-400">
+          <Upload size={22} strokeWidth={1.8} />
         </div>
-        <h3 className="mb-2 text-lg font-medium text-stone-800">点击或拖拽上传 HTML 文档</h3>
-        <p className="mb-4 text-sm text-stone-500">支持 .html、.htm 格式</p>
-        <div className="flex items-center gap-2 rounded-full bg-stone-100 px-4 py-2 text-xs text-stone-600">
-          <FileText size={14} />
+        <h3 className="mb-1 text-base font-medium text-stone-800 dark:text-stone-100">点击或拖拽上传文档</h3>
+        <p className="mb-2.5 text-xs text-stone-500 dark:text-stone-400">支持 .html、.htm、.md 格式</p>
+        <div className="flex items-center gap-1.5 rounded-full bg-stone-100 px-3.5 py-1.5 text-xs text-stone-600 dark:bg-stone-800 dark:text-stone-300">
+          <FileText size={13} />
           <span>选择文件</span>
         </div>
       </button>
       <input
         ref={inputRef}
         type="file"
-        accept=".html,.htm"
+        accept=".html,.htm,.md,.markdown"
         onChange={handleChange}
         className="hidden"
       />
       {error && (
-        <div className="mt-4 flex items-center gap-2 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
+        <div className="mt-4 flex items-center gap-2 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-500/15 dark:text-red-400">
           <AlertCircle size={16} />
           <span>{error}</span>
         </div>
