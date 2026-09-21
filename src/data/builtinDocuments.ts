@@ -14,8 +14,14 @@ export interface BuiltinDocument {
 export const BUILTIN_DOCUMENTS: BuiltinDocument[] = [
   {
     id: 'builtin-guokao-chengyu-v1',
-    title: '国考言语·成语辨析与近五年考频大全',
+    title: '公考言语·成语辨析与近年考频大全',
     loadContent: () =>
       import('./builtin-guokao-chengyu.html?raw').then((m) => m.default),
+  },
+  {
+    id: 'builtin-anniversary-2026-2027-v1',
+    title: '公考常识·2026—2027年重要周年考点',
+    loadContent: () =>
+      import('./builtin-anniversary-2026-2027.html?raw').then((m) => m.default),
   },
 ];
